@@ -1,0 +1,35 @@
+---
+description: Project structure and architecture guidelines
+globs: 
+alwaysApply: false
+---
+# Project Structure and Architecture
+
+UpToTrial follows a domain-driven design with a clean architecture pattern. When working with this codebase, follow these structural guidelines:
+
+## Directory Organization
+
+```
+uptotrial-backend/
+├── app/                     # Main package
+│   ├── api/                 # API endpoints (thin views) that use `services`
+│   ├── cli/                 # CLI for accessing the same services
+│   ├── infrastructure/      # External integrations (clinicaltrials.gov api + db)
+│   └── services/            # The actual services
+
+Read top level readme.md for more information.
+
+## Application Flow
+
+1. Request enters through API endpoints
+2. Endpoints use dependency injection to access services
+3. Services contain business logic and access external services (llm + db) via infrastructure layer
+4. Infrastructure layer does not depend on other parts of the app
+
+## Key Architecture Principles
+
+- **Separation of Concerns**: Keep API, services, and infrastructure separate
+- **Dependency Injection**: Use FastAPI's dependency injection for services
+- **Single Responsibility**: Each component should have one reason to change
+- **Factory Pattern**: App is created using a factory (see `app.py`)
+- **Thin views**: API endpoints should be thin, delegating to services
